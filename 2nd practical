@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Update package index
+sudo apt update
+
+# Install Docker
+sudo apt install -y docker.io
+
+# Start and enable Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Create directory for Docker image
+mkdir docker
+cd docker
+
+# Create Dockerfile
+cat << EOF > Dockerfile
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y nginx
+CMD ["nginx", "-g", "daemon off;"]
+EOF
+
+# Build Docker image
+sudo docker build -t docker .
+
+# Log in to Docker Hub
+sudo docker login
+
+# Tag Docker image
+sudo docker tag docker sayali75/dockersample
+
+# Push Docker image to Docker Hub
+sudo docker push sayali75/dockersample
+
+# display the images
+sudo docker images
+
+# Delete local Docker image
+sudo docker rmi docker
+
+# display the images
+sudo docker images
+
+
+# Pull Docker image from Docker Hub
+sudo docker pull sayali75/dockersample
+
+# display the images
+sudo docker images
