@@ -1,0 +1,11 @@
+create private registry and push any images on that registry
+docker pull registry
+docker images
+docker run -d -p 5000:5000 --name registry registry
+docker images
+docker pull centos
+docker tag 5d0da3dc9764 localhost:5000/centos
+docker push localhost:5000/centos
+docker rmi 5d0da3dc9764
+docker pull localhost:5000/centos
+docker images
