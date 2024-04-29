@@ -1,0 +1,72 @@
+docker swarm
+
+create 4 instance 1 manager 3 worker
+install the docker and init the docker swarm
+#docker swarm init
+#docker node ls
+#mkdir swarm 
+#cd swarm
+
+#vim app.py
+from flask import Flask
+import redis
+
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+
+@app.route('/')
+def hello():
+    cache.incr('hits')
+    count = cache.get('hits').decode('utf-8')
+    return f'Hello World! This page has been visited {count} times.'
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)
+
+#vim requirements.txt
+flask
+redis
+
+#vim Dockerfile 
+FROM python:3.8-slim
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY app.py .
+
+CMD ["python", "app.py"]
+
+#vim swarm.yml
+version: '3'
+
+services:
+  manager:
+    image: flask_app
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  worker:
+    image: flask_app
+    deploy:
+      replicas: 3
+
+#docker biuld -t dsimage2:latest
+#docker tag dsimage2:latest sayali75/dsimage2:latest
+#docker login
+
+login succeeded
+
+#docker push sayali75/dsimage2:latest
+
+depoly the stack
+#docker stack deploy -c swarm.yml dsimage2
+
+#docker service ls 
+#docker node ls
+
+copy publicip:8000
