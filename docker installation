@@ -40,21 +40,6 @@ docker run hello-world
 ---------------------
 docker ps
 docker ps -a (show dead container)
-
-
-FROM ubuntu                                                                                                                                                           
-MAINTAINER gauravahire753@gmail.com
-RUN apt-get update
-RUN apt-get install nginx -y
-CMD ["echo","images created"]
-
-vi dockerfile
-
-docker build -t username/imagename:tag .
-
-docker push username/imagename:tag
-
-docker login
 docker run -d redis
 docker run -name mynginx -p 7089:80 -d nginx
 docker ps -a
