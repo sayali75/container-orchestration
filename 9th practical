@@ -1,0 +1,13 @@
+healthcheck 
+
+install docker
+
+#mkdir postgres
+#cd postgres
+#docker pull postgres
+#docker run --name pg1 -e POSTGRES_PASSWORD=s1 -d postgres:latest
+#docker exec -it pg1 /bin/bash
+#pg_isready -u root
+#doker ps
+#docker run --name pg2 -e POSTGRES_PASSWORD=s1 --health-cmd="pg_isready -u root || exit 1"-d postgres:latest
+#docker run --name pg3 -e POSTGRES_PASSWORD=s1 --health-cmd="pg_isready -u root || exit 1"-d postgres:latest
