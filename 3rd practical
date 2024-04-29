@@ -1,0 +1,7 @@
+pull jenkins images and expose data and control ports
+
+install docker in ubuntu
+docker pull jenkins/jenkins
+docker run -p 8080:8080 -p 50000:50000 jenkins/jenkins
+copy paste publicip:8080
+data port 8080 and control port 50000
