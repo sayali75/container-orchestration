@@ -1,0 +1,60 @@
+stack
+
+Step 1: Create Flask Application and Dockerfile
+#vim app.py
+from flask import Flask
+import redis
+
+app = Flask(__name__)
+cache = redis.Redis(host='redis', port=6379)
+
+@app.route('/')
+def hello():
+    cache.incr('hits')
+    count = cache.get('hits').decode('utf-8')
+    return f'Hello World! This page has been visited {count} times.'
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug=True)
+
+
+#vim Dockerfile
+FROM python:3.8-slim
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY app.py .
+
+CMD ["python", "app.py"]
+
+
+#vim requirements.txt
+flask
+redis
+
+
+Step 2: Build Docker Image
+#docker build -t flask_app 
+
+Step 3: Initialize Docker Swarm
+#docker swarm init
+
+Step 4: Create Docker Stack
+#docker-compose.yml
+version: '3'
+
+services:
+  flask_redis:
+    image: flask_app
+    deploy:
+      replicas: 5
+
+
+docker stack deploy -c docker-compose.yml myapp
+########
+chmod +x deploy_stack.sh
+#########
+./deploy_stack.sh
